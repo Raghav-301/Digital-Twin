@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": 1780605030.6915276,
+    "summary": "User preferences: User wants a timeline for Andrew Ng, not the AI.\n\nConversation summaries: User initially asked for AI's timeline, then clarified for Andrew Ng's.\n\nSemantic memories: AI is a digital entity, no personal timeline; knowledge up to early 2023."
+  },
+  {
+    "timestamp": 1780642438.5755444,
+    "summary": "User preferences: User is interested in machine learning concepts, specifically decision trees and neural networks.\n\nConversation summaries: Explained decision trees as flowcharts and neural networks as stacked functions/Lego bricks.\n\nSemantic memories: Decision trees: root, branch, leaf, prediction. Neural networks: input, hidden, output layers, prediction."
+  },
+  {
+    "timestamp": 1780648442.439741,
+    "summary": "- User preferences: User is interested in machine learning concepts, particularly neural networks and decision trees.\n- Conversation summaries: Explained decision trees, deep vs. shallow neural networks, CNNs, general neural networks, and hyperparameters.\n- Semantic memories: User frequently asks about decision trees and various neural network types."
+  }
+]

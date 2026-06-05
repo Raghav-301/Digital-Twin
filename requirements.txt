@@ -1,0 +1,54 @@
+# =============================================================================
+# requirements.txt — generated from source audit of all project .py files
+# =============================================================================
+# Install:  pip install -r requirements.txt
+#
+# External tools (NOT pip-installable — must be installed separately):
+#   • Poppler  — required by pdf2image (Windows: https://github.com/oschwartz10612/poppler-windows)
+#   • Tesseract OCR — required by pytesseract  (https://github.com/UB-Mannheim/tesseract/wiki)
+#   • FFmpeg   — required by f5-tts on Windows  (https://ffmpeg.org/download.html)
+# =============================================================================
+
+
+# ── Environment ───────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0            # main.py · hybrid_retriever.py · pdf_to_text.py · voice_input.py
+
+
+# ── Core AI / ML ──────────────────────────────────────────────────────────────
+torch>=2.0.0                    # hybrid_retriever.py · voice_output.py
+numpy>=1.24.0                   # hybrid_retriever.py · voice_input.py
+sentence-transformers>=3.0.0    # hybrid_retriever.py  — SentenceTransformer + CrossEncoder
+rank-bm25>=0.2.2                # hybrid_retriever.py  — BM25Okapi keyword index
+
+
+# ── Vector Store ──────────────────────────────────────────────────────────────
+chromadb>=0.5.0                 # hybrid_retriever.py · vector_pipeline.py
+
+
+# ── LangChain ─────────────────────────────────────────────────────────────────
+langchain>=0.3.0                # transitive core dependency for packages below
+langchain-experimental>=0.3.0   # vector_pipeline.py  — SemanticChunker
+langchain-huggingface>=0.1.0    # vector_pipeline.py  — HuggingFaceEmbeddings
+
+
+# ── Google Gemini ─────────────────────────────────────────────────────────────
+google-genai>=1.0.0             # hybrid_retriever.py  — genai.Client · GenerateContentConfig
+
+
+# ── PDF Processing ────────────────────────────────────────────────────────────
+pdf2image>=1.17.0               # pdf_to_text.py  — convert_from_path  (needs Poppler in PATH)
+pytesseract>=0.3.10             # pdf_to_text.py  — image_to_string OCR (needs Tesseract in PATH)
+
+
+# ── Web Scraping ──────────────────────────────────────────────────────────────
+requests>=2.31.0                # research_paper_scrapper.py · voice_input.py (ElevenLabs STT)
+beautifulsoup4>=4.12.0          # research_paper_scrapper.py  — HTML parsing
+
+
+# ── Voice — shared audio I/O ──────────────────────────────────────────────────
+sounddevice>=0.4.6              # voice_input.py (mic recording) · voice_output.py (playback)
+soundfile>=0.12.1               # voice_input.py (WAV encode)   · voice_output.py (WAV read/write)
+
+
+# ── Voice — output / TTS (F5TTS clone) ───────────────────────────────────────
+f5-tts>=0.3.2                   # voice_output.py  — F5TTS voice cloning (needs FFmpeg on Windows)
