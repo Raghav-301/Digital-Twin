@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrew Ng Digital Twin — AI Teaching Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Top Navigation Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="avatar-container">
+                    <div class="avatar-glow"></div>
+                    <div class="avatar-box">
+                        <span class="avatar-icon">🎓</span>
+                    </div>
+                    <span class="status-indicator-dot"></span>
+                </div>
+                <div class="header-title-box">
+                    <div class="title-row">
+                        <h1 class="app-title">Andrew Ng</h1>
+                        <span class="badge-twin">DIGITAL TWIN</span>
+                    </div>
+                    <p class="app-subtitle">AI Teaching Assistant &amp; Neural RAG Companion</p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="status-pill" id="system-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span id="status-text">Gemini 2.5 Active</span>
+                </div>
+
+                <button class="icon-btn" id="tts-toggle-btn" title="Toggle Auto Text-to-Speech">
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                </button>
+
+                <button class="icon-btn" id="history-modal-btn" title="View Memory Logs">
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+
+                <button class="btn-secondary" id="clear-chat-btn" title="Reset Session Memory">
+                    <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                    </svg>
+                    <span>Reset Chat</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-viewport">
+            <div class="chat-container" id="chat-container">
+                
+                <!-- Welcome Hero Card -->
+                <div class="welcome-card" id="welcome-card">
+                    <div class="welcome-badge">
+                        <span class="star-sparkle">✨</span> Hybrid RAG Architecture
+                    </div>
+                    <h2>Welcome to the Andrew Ng AI Twin</h2>
+                    <p class="welcome-desc">
+                        I am trained on Andrew Ng's lectures, research papers, and teaching philosophy. 
+                        Ask me about Machine Learning algorithms, Deep Learning, or intuitive explanations!
+                    </p>
+
+                    <div class="feature-tags">
+                        <span class="tag">🔍 ChromaDB Semantic Vector Search</span>
+                        <span class="tag">📊 BM25 Keyword Hybrid Search</span>
+                        <span class="tag">🎯 CrossEncoder Reranking</span>
+                        <span class="tag">⚡ Gemini 2.5 Flash Engine</span>
+                    </div>
+
+                    <div class="suggested-prompts-title">Try asking one of these questions:</div>
+                    <div class="prompts-grid">
+                        <button class="prompt-chip" data-prompt="What is Machine Learning?">
+                            <span class="chip-icon">💡</span>
+                            <span class="chip-text">What is Machine Learning?</span>
+                        </button>
+                        <button class="prompt-chip" data-prompt="Can you explain Gradient Descent intuitively?">
+                            <span class="chip-icon">📉</span>
+                            <span class="chip-text">Can you explain Gradient Descent intuitively?</span>
+                        </button>
+                        <button class="prompt-chip" data-prompt="How do I start building a neural network?">
+                            <span class="chip-icon">🧠</span>
+                            <span class="chip-text">How do I start building a neural network?</span>
+                        </button>
+                        <button class="prompt-chip" data-prompt="What is the difference between Supervised and Unsupervised Learning?">
+                            <span class="chip-icon">🤖</span>
+                            <span class="chip-text">Supervised vs Unsupervised Learning?</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Message stream container -->
+                <div class="messages-list" id="messages-list">
+                    <!-- Dynamic chat messages inserted via script.js -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Input Bar Footer -->
+        <footer class="app-footer">
+            <div class="input-card">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="user-input" 
+                        placeholder="Ask Andrew Ng anything about Machine Learning, AI, or Deep Learning..." 
+                        rows="1"
+                        maxlength="1000"
+                    ></textarea>
+                </div>
+
+                <div class="input-actions">
+                    <button class="action-btn mic-btn" id="mic-btn" title="Voice Input (Speech to Text)">
+                        <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </button>
+
+                    <button class="action-btn send-btn" id="send-btn" title="Send Message (Enter)">
+                        <svg class="svg-icon send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        <div class="spinner hidden" id="send-spinner"></div>
+                    </button>
+                </div>
+            </div>
+            <div class="footer-note">
+                Andrew Ng Digital Twin answers within a 50–60 word constraint grounded in course lecture memory.
+            </div>
+        </footer>
+    </div>
+
+    <!-- Memory Logs Modal -->
+    <div class="modal-backdrop hidden" id="memory-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🧠 Conversation &amp; Memory State</h3>
+                <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                <div class="loading-state">Fetching memory state...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Javascript -->
+    <script src="script.js"></script>
+</body>
+</html>

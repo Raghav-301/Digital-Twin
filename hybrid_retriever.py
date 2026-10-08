@@ -13,6 +13,7 @@ import json
 import numpy as np
 import torch
 import chromadb
+from typing import Any
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from concurrent.futures import ThreadPoolExecutor
@@ -76,25 +77,34 @@ def load_chroma() -> chromadb.Collection:
     return chromadb.PersistentClient(path=CHROMA_PATH).get_or_create_collection(COLLECTION_NAME)
 
 
-def build_bm25_index(collection: chromadb.Collection) -> tuple[BM25Okapi, list[dict]]:
+def build_bm25_index(collection: chromadb.Collection) -> tuple[Any, list[dict]]:
     result   = collection.get(include=["documents", "metadatas"])
     ids, docs_raw, metas = result["ids"], result["documents"], result["metadatas"]
     corpus   = [doc.lower().split() for doc in docs_raw]
     docs     = [{"id": ids[i], "document": docs_raw[i], "metadata": metas[i]}
                 for i in range(len(ids))]
+    if not corpus:
+        return None, []
     return BM25Okapi(corpus), docs
 
 
 def semantic_search(query_vec: list[float], collection: chromadb.Collection, top_k: int = TOP_K_RETRIEVAL) -> list[dict]:
+    if collection.count() == 0:
+        return []
     res = collection.query(query_embeddings=[query_vec], n_results=top_k, include=["documents", "metadatas"])
+    if not res["ids"] or not res["ids"][0]:
+        return []
     ids, docs, metas = res["ids"][0], res["documents"][0], res["metadatas"][0]
     return [{"id": ids[i], "document": docs[i], "metadata": metas[i]} for i in range(len(ids))]
 
 
-def keyword_search(query_tokens: list[str], bm25_index: BM25Okapi, bm25_docs: list[dict], top_k: int = TOP_K_RETRIEVAL) -> list[dict]:
+def keyword_search(query_tokens: list[str], bm25_index: Any, bm25_docs: list[dict], top_k: int = TOP_K_RETRIEVAL) -> list[dict]:
+    if bm25_index is None or not bm25_docs:
+        return []
     scores  = np.array(bm25_index.get_scores(query_tokens))
     top_idx = np.argsort(scores)[::-1][:top_k]
     return [bm25_docs[i] for i in top_idx if scores[i] > 0]
+
 
 
 def merge_results(semantic: list[dict], keyword: list[dict], semantic_weight: float = SEMANTIC_WEIGHT, keyword_weight: float = KEYWORD_WEIGHT, k: int = RRF_K) -> list[dict]:

@@ -14,6 +14,12 @@
 python-dotenv>=1.0.0            # main.py · hybrid_retriever.py · pdf_to_text.py · voice_input.py
 
 
+# ── Web Framework & API Server ───────────────────────────────────────────────
+fastapi>=0.110.0                # api.py  — REST API framework
+uvicorn>=0.28.0                 # api.py  — ASGI web server
+
+
+
 # ── Core AI / ML ──────────────────────────────────────────────────────────────
 torch>=2.0.0                    # hybrid_retriever.py · voice_output.py
 numpy>=1.24.0                   # hybrid_retriever.py · voice_input.py
