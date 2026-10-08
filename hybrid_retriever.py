@@ -73,7 +73,7 @@ if not GEMINI_API_KEY:
 
 # ── Core functions ────────────────────────────────────────────────────────────
 def load_chroma() -> chromadb.Collection:
-    return chromadb.PersistentClient(path=CHROMA_PATH).get_collection(COLLECTION_NAME)
+    return chromadb.PersistentClient(path=CHROMA_PATH).get_or_create_collection(COLLECTION_NAME)
 
 
 def build_bm25_index(collection: chromadb.Collection) -> tuple[BM25Okapi, list[dict]]:

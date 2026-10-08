@@ -1,0 +1,14 @@
+# Environment variables & secrets
+.env
+*.env
+
+# Python cache & virtual environment
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+
+# Vector DB & Runtime Flags
+chroma_db_data/
+.pipeline_initialized
